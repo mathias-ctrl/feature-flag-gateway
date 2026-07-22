@@ -1,0 +1,54 @@
+[project]
+name = "feature-flag-gateway"
+version = "0.1.0"
+description = "Multi-tenant feature flag gateway with Redis cache and SSE synchronization"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi>=0.116,<1.0",
+  "uvicorn[standard]>=0.35,<1.0",
+  "sqlalchemy[asyncio]>=2.0.41,<2.2",
+  "asyncpg>=0.30,<1.0",
+  "aiosqlite>=0.21,<1.0",
+  "alembic>=1.16,<2.0",
+  "redis>=6.2,<9.0",
+  "pydantic-settings>=2.10,<3.0",
+  "pyjwt>=2.10,<3.0",
+  "bcrypt>=4.3,<5.0",
+  "structlog>=25.4,<26.0",
+  "sse-starlette>=2.3,<4.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.4,<9.0",
+  "pytest-asyncio>=1.0,<2.0",
+  "pytest-cov>=6.2,<8.0",
+  "httpx>=0.28,<1.0",
+  "ruff>=0.12,<1.0",
+  "mypy>=1.16,<2.0",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+cache_dir = "/tmp/pytest-cache"
+asyncio_mode = "auto"
+testpaths = ["tests"]
+addopts = "--cov=app --cov-report=term-missing --cov-fail-under=85"
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "ANN", "ASYNC", "S"]
+ignore = ["S101"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+plugins = ["pydantic.mypy"]
+
+
+[tool.coverage.run]
+data_file = "/tmp/.coverage"
+source = ["app"]
